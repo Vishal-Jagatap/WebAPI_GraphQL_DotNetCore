@@ -1,2 +1,2 @@
-# WebAPI_GraphQL_DotNetCore
-Dot Net Core
+DotNet Core Web API With GraphQL,EntityFramework And SQL Server
+
