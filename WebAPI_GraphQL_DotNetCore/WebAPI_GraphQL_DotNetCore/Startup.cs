@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GraphQL;
+using GraphQL.Server;
+using GraphQL.Server.Internal;
+using GraphQL.Server.Ui.Playground;
+using GUMUAPI.Schemas;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using WebAPI_GraphQL_DotNetCore.Model;
+using WebAPI_GraphQL_DotNetCore.Repository;
+using WebAPI_GraphQL_DotNetCore.Schemas;
 
 namespace WebAPI_GraphQL_DotNetCore
 {
@@ -21,21 +24,43 @@ namespace WebAPI_GraphQL_DotNetCore
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IArtistRepository, ArtistRepository>();
+            services.AddTransient<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
+            services.AddTransient<ApplicationSchema>();
+            services.AddGraphQL(o => { o.ExposeExceptions = false; }).AddGraphTypes(ServiceLifetime.Scoped);
+            services.AddTransient(typeof(IGraphQLExecuter<>), typeof(MyDefaultGraphQLExecuter<>));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    );
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
             app.UseMvc();
+            app.UseGraphQL<ApplicationSchema>();
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+            app.UseCors("CorsPolicy");
         }
     }
 }
