@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI_GraphQL_DotNetCore", "WebAPI_GraphQL_DotNetCore\WebAPI_GraphQL_DotNetCore.csproj", "{7D8961B2-C3AF-4FAA-8D46-E5A369D778FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D8961B2-C3AF-4FAA-8D46-E5A369D778FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D8961B2-C3AF-4FAA-8D46-E5A369D778FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D8961B2-C3AF-4FAA-8D46-E5A369D778FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D8961B2-C3AF-4FAA-8D46-E5A369D778FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F80CCDD6-8D9C-4EAC-BBEE-66F099821521}
+	EndGlobalSection
+EndGlobal
